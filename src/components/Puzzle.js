@@ -3,7 +3,7 @@ import Hexa from "./Hexa";
 import {useRef} from "react";
 
 function Puzzle() {
-    const piecesNumber = 14
+    const piecesNumber = 13
     const flexagonsStateRef = useRef(Array(piecesNumber).fill(null))
     const side = 50
     const height = Math.sqrt(3) * side
@@ -82,9 +82,9 @@ function Puzzle() {
         } else if (i < 12) {
             pieces.push(<Hexa key={i} index={i} state={5} side={side} degrees={(i*60)%360}
                               ref={setRef}
-                              images={[starfish.starfish41, lizard.lizard11, turtle.turtle21, starfish.starfish42, lizard.lizard12, turtle.turtle22]}
+                              images={[starfish.starfish41, lizard.lizard31, turtle.turtle31, starfish.starfish42, lizard.lizard32, turtle.turtle32]}
                               onDragEnd={() => snapNeighbors(i)}/>);
-        } else if (i < 14) {
+        } else if (i < 13) {
             pieces.push(<Hexa key={i} index={i} state={5} side={side} degrees={(i*60)%360}
                               ref={setRef}
                               images={[starfish.starfish21, turtle.turtle11, lizard.lizard31, starfish.starfish22, turtle.turtle12, lizard.lizard32]}
