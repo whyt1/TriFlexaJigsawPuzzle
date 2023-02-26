@@ -61,6 +61,33 @@ import turtle3_W from './turtle/turtle3_W.png'
 import turtle3_SW from './turtle/turtle3_SW.png'
 import turtle3_NW from './turtle/turtle3_NW.png'
 
+import demon1_E from './demon/demon1_E.png'
+import demon1_NE from './demon/demon1_NE.png'
+import demon1_SE from './demon/demon1_SE.png'
+import demon1_W from './demon/demon1_W.png'
+import demon1_SW from './demon/demon1_SW.png'
+import demon1_NW from './demon/demon1_NW.png'
+import demon2_E from './demon/demon2_E.png'
+import demon2_NE from './demon/demon2_NE.png'
+import demon2_SE from './demon/demon2_SE.png'
+import demon2_W from './demon/demon2_W.png'
+import demon2_SW from './demon/demon2_SW.png'
+import demon2_NW from './demon/demon2_NW.png'
+import demon3_E from './demon/demon3_E.png'
+import demon3_NE from './demon/demon3_NE.png'
+import demon3_SE from './demon/demon3_SE.png'
+import demon3_W from './demon/demon3_W.png'
+import demon3_SW from './demon/demon3_SW.png'
+import demon3_NW from './demon/demon3_NW.png'
+
+const demon = {
+    demon11: [demon1_SE, demon1_SW, demon1_E, demon1_W, demon1_NE, demon1_NW],
+    demon12: [demon1_NE, demon1_NW, demon1_SW, demon1_SE, demon1_W, demon1_E],
+    demon21: [demon2_SE, demon2_SW, demon2_E, demon2_W, demon2_NE, demon2_NW],
+    demon22: [demon2_NE, demon2_NW, demon2_SW, demon2_SE, demon2_W, demon2_E],
+    demon31: [demon3_SE, demon3_SW, demon3_E, demon3_W, demon3_NE, demon3_NW],
+    demon32: [demon3_NE, demon3_NW, demon3_SW, demon3_SE, demon3_W, demon3_E],
+}
 const turtle = {
     turtle11: [turtle1_SE, turtle1_SW, turtle1_E, turtle1_W, turtle1_NE, turtle1_NW],
     turtle12: [turtle1_NE, turtle1_NW, turtle1_SW, turtle1_SE, turtle1_W, turtle1_E],
@@ -90,4 +117,4 @@ const starfish = {
     starfish42: [starfish4_NE, starfish4_NW, starfish4_SW, starfish4_SE, starfish4_W, starfish4_E]
 }
 
-export { starfish, lizard, turtle }
+export { starfish, lizard, turtle, demon }

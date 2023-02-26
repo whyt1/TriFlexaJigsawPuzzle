@@ -1,12 +1,22 @@
-import { starfish, lizard, turtle } from "../images";
-import Hexa from "./Hexa";
-import {useRef} from "react";
+import {useEffect, useRef, useState} from "react";
+import { lizard, turtle, demon } from "../images";
+import { getRandomInt, Hexa } from "../components";
+
 
 function Puzzle() {
+    const screenSize = { width: window.innerWidth, height: window.innerHeight }
     const piecesNumber = 13
     const flexagonsStateRef = useRef(Array(piecesNumber).fill(null))
     const side = 50
     const height = Math.sqrt(3) * side
+
+    let [isShuffled, setShuffled] = useState(false)
+    let [startingState, setStartingState]  = useState(0)
+    useEffect(() => {
+        setTimeout(() => {setStartingState(1)}, 1000)
+        setTimeout(() => {setStartingState(2)}, 2000)
+        setTimeout(() => {setShuffled(true)}, 3000)
+    }, [])
 
     const snapNeighbors = (index) => {
         const epsilon = 30
@@ -16,7 +26,7 @@ function Puzzle() {
         const initialPosition = selfRef.getFlexagonInitialPosition()
         const positionZero = (flexagonRotation%180) ? {x: flexagonPosition.x + height/2, y: flexagonPosition.y + side/2}
             : flexagonPosition;
-        console.log("flexagon rotation:", flexagonRotation, "flexagon position:", flexagonPosition, "real position:", positionZero)
+        // console.log("flexagon rotation:", flexagonRotation, "flexagon position:", flexagonPosition, "real position:", positionZero)
         for (let i = 0; i < piecesNumber; i++) {
             if (i === index) {
                 continue
@@ -33,7 +43,7 @@ function Puzzle() {
                 let deltaX = x - initialPosition.x
                 let y = (positionZero.y < flexagonPosition.y) ? (flexagonPosition.y - 3*side+1) : (flexagonPosition.y + 3*side-1);
                 let deltaY = y - initialPosition.y
-                console.log("neighbor position:", flexagonPosition, "old position:", positionZero, "new position:", {x:x,y:y}, "delta:",{x:deltaX,y:deltaY} )
+                // console.log("neighbor position:", flexagonPosition, "old position:", positionZero, "new position:", {x:x,y:y}, "delta:",{x:deltaX,y:deltaY} )
                 selfRef.setFlexagonPosition(deltaX, deltaY);
                 //setPosition(selfRef, x,y)
                 return;
@@ -43,7 +53,7 @@ function Puzzle() {
                 let deltaX = x - initialPosition.x
                 let y = flexagonPosition.y
                 let deltaY = y - initialPosition.y + 0.01
-                console.log("neighbor position:", flexagonPosition, "old position:", positionZero, "new position:", {x:x,y:y}, "delta:",{x:deltaX,y:deltaY} )
+                // console.log("neighbor position:", flexagonPosition, "old position:", positionZero, "new position:", {x:x,y:y}, "delta:",{x:deltaX,y:deltaY} )
                 selfRef.setFlexagonPosition(deltaX, deltaY);
                 //setPosition(selfRef, x,y)
                 return;
@@ -51,48 +61,74 @@ function Puzzle() {
         }
     }
 
+    const w = screenSize.width/2
+    const h = screenSize.height/2
+    const positions = [
+        { x: w-4*height+1, y: h-5*side+1 },
+        { x: w+2*height-1, y: h-5*side+1 },
+        { x: w-height, y: h-2*side },
+        { x: w-4*height+1, y: h+side-1 },
+        { x: w+2*height-1, y: h+side-1 },
+
+        { x: w-2*height+1, y: h-5*side+1 },
+        { x: w-5*height+1, y: h-2*side },
+        { x: w+height-1, y: h-2*side },
+        { x: w-2*height+1, y: h+side-1 },
+
+        { x: w-1, y: h-5*side+1 },
+        { x: w-3*height+1, y: h-2*side },
+        { x: w+3*height-1, y: h-2*side },
+        { x: w-1, y: h+side-1 },
+    ]
     const pieces = [];
     for (let i = 0; i < piecesNumber; i++) {
         const setRef = el => flexagonsStateRef.current[i] = el;
-        if (i < 2) {
-            pieces.push(<Hexa key={i} index={i} state={0} side={side} degrees={(i*60)%360}
-                              ref={setRef}
-                              images={[turtle.turtle21, starfish.starfish11, lizard.lizard21, turtle.turtle22, starfish.starfish12, lizard.lizard22]}
-                              onDragEnd={() => snapNeighbors(i)}/>);
-        } else if (i < 4) {
-            pieces.push(<Hexa key={i} index={i} state={3} side={side} degrees={(i*60)%360}
-                              ref={setRef}
-                              images={[lizard.lizard21, turtle.turtle11, starfish.starfish31, lizard.lizard22, turtle.turtle12, starfish.starfish32]}
-                              onDragEnd={() => snapNeighbors(i)}/>);
-        } else if (i < 6) {
-            pieces.push(<Hexa key={i} index={i} state={1} side={side} degrees={(i*60)%360}
-                              ref={setRef}
-                              images={[starfish.starfish41, turtle.turtle31, lizard.lizard11, starfish.starfish42, turtle.turtle32, lizard.lizard12]}
-                              onDragEnd={() => snapNeighbors(i)}/>);
-        } else if (i < 8) {
-            pieces.push(<Hexa key={i} index={i} state={4} side={side} degrees={(i*60)%360}
-                              ref={setRef}
-                              images={[turtle.turtle21, lizard.lizard21, starfish.starfish31, turtle.turtle32, lizard.lizard12, starfish.starfish42]}
-                              onDragEnd={() => snapNeighbors(i)}/>);
-        } else if (i < 10) {
-            pieces.push(<Hexa key={i} index={i} state={2} side={side} degrees={(i*60)%360}
-                              ref={setRef}
-                              images={[lizard.lizard21, starfish.starfish31, turtle.turtle21, lizard.lizard22, starfish.starfish32, turtle.turtle22]}
-                              onDragEnd={() => snapNeighbors(i)}/>);
-        } else if (i < 12) {
-            pieces.push(<Hexa key={i} index={i} state={5} side={side} degrees={(i*60)%360}
-                              ref={setRef}
-                              images={[starfish.starfish41, lizard.lizard31, turtle.turtle31, starfish.starfish42, lizard.lizard32, turtle.turtle32]}
-                              onDragEnd={() => snapNeighbors(i)}/>);
-        } else if (i < 13) {
-            pieces.push(<Hexa key={i} index={i} state={5} side={side} degrees={(i*60)%360}
-                              ref={setRef}
-                              images={[starfish.starfish21, turtle.turtle11, lizard.lizard31, starfish.starfish22, turtle.turtle12, lizard.lizard32]}
-                              onDragEnd={() => snapNeighbors(i)}/>);
+        const randomValues = {
+            state: getRandomInt(6),
+            degrees: getRandomInt(6) * 60,
+            x: getRandomInt(2*(w-height)),
+            y: getRandomInt(2*(h-2*side))
+        }
+        if (i < 5) { //0, 1, 2, 3, 4
+            pieces.push(<Hexa key={i} index={i} side={side} ref={setRef}
+                              images={[turtle.turtle11, demon.demon11, lizard.lizard11, turtle.turtle12, demon.demon12, lizard.lizard12]}
+                              onDragEnd={() => snapNeighbors(i)}
+                              x={isShuffled ? randomValues.x : positions[i].x}
+                              y={isShuffled ? randomValues.y : positions[i].y}
+                              state={isShuffled ? randomValues.state : startingState}
+                              degrees={isShuffled ? randomValues.degrees : startingState > 1 ? 60 : 0}/>);
+        } else if (i < 9) {//5, 6, 7, 8,
+            pieces.push(<Hexa key={i} index={i} side={side} ref={setRef}
+                              images={[turtle.turtle21, demon.demon21, lizard.lizard21, turtle.turtle22, demon.demon22, lizard.lizard22]}
+                              onDragEnd={() => snapNeighbors(i)}
+                              x={isShuffled ? randomValues.x : positions[i].x}
+                              y={isShuffled ? randomValues.y : positions[i].y}
+                              state={isShuffled ? randomValues.state : startingState}
+                              degrees={isShuffled ? randomValues.degrees : startingState > 1 ? 60 : 0}/>);
+        } else if (i < 13) {//9, 10, 11, 12
+            pieces.push(<Hexa key={i} index={i} side={side} ref={setRef}
+                              images={[turtle.turtle31, demon.demon31, lizard.lizard31, turtle.turtle32, demon.demon32, lizard.lizard32]}
+                              onDragEnd={() => snapNeighbors(i)}
+                              x={isShuffled ? randomValues.x : positions[i].x}
+                              y={isShuffled ? randomValues.y : positions[i].y}
+                              state={isShuffled ? randomValues.state : startingState}
+                              degrees={isShuffled ? randomValues.degrees : startingState > 1 ? 60 : 0}/>);
+        } else {//others
+            pieces.push(<Hexa key={i} index={i} side={side} ref={setRef}
+                              images={[turtle.turtle21, demon.demon11, lizard.lizard21, turtle.turtle22, demon.demon12, lizard.lizard22]}
+                              onDragEnd={() => snapNeighbors(i)}
+                              x={randomValues.x}
+                              y={randomValues.y}
+                              state={randomValues.state}
+                              degrees={randomValues.degrees}/>);
         }
     }
 
-    return <div className="puzzle">{pieces}</div>;
+    return (
+        <div className="puzzle">
+            {pieces}
+        </div>
+    )
 }
 
 export default Puzzle

@@ -50,4 +50,75 @@ function isInsideHexa(x, y, degrees, height, side) {
     }
 }
 
-export default isInsideHexa
+function clickedMiddle(x, y, degrees, height, side) {
+    if (degrees%180) {
+        x = x - height/2
+        y = y - side/2
+    }
+    return (
+        isInside(1*height, 2*side, (3/4)*height, (7/4)*side, (3/4)*height, (9/4)*side, x, y)
+        || isInside(1*height, 2*side, (3/4)*height, (7/4)*side, 1*height, (3/2)*side, x, y)
+        || isInside(1*height, 2*side, (5/4)*height, (7/4)*side, 1*height, (3/2)*side, x, y)
+        || isInside(1*height, 2*side, (5/4)*height, (7/4)*side, (5/4)*height, (9/4)*side, x, y)
+        || isInside(1*height, 2*side, 1*height, (5/2)*side, (5/4)*height, (9/4)*side, x, y)
+        || isInside(1*height, 2*side, 1*height, (5/2)*side, (3/4)*height, (9/4)*side, x, y)
+    )
+}
+
+function clickedVerticesBottom(x, y, degrees, height, side) {
+    if (degrees%180) {
+        x = x - height/2
+        y = y - side/2
+    }
+    return (
+        isInside(0, (3/2)*side, (1/4)*height, (5/4)*side, 0, 1*side, x, y)
+        || isInside((1/4)*height, (3/4)*side, (1/4)*height, (5/4)*side, 0, 1*side, x, y)
+        || isInside(2*height, (3/2)*side, (7/4)*height, (5/4)*side, 2*height, 1*side, x, y)
+        || isInside((7/4)*height, (3/4)*side, (7/4)*height, (5/4)*side, 2*height, 1*side, x, y)
+        || isInside(1*height, 4*side, 1*height, (7/2)*side, (5/4)*height, (15/4)*side, x, y)
+        || isInside(1*height, 4*side, 1*height, (7/2)*side, (3/4)*height, (15/4)*side, x, y)
+    )
+}
+
+function clickedVerticesTop(x, y, degrees, height, side) {
+    if (degrees%180) {
+        x = x - height/2
+        y = y - side/2
+    }
+    return (
+        isInside(0, (5/2)*side, (1/4)*height, (11/4)*side, 0, 3*side, x, y)
+        || isInside((1/4)*height, (13/4)*side, (1/4)*height, (11/4)*side, 0, 3*side, x, y)
+        || isInside(2*height, (5/2)*side, (7/4)*height, (11/4)*side, 2*height, 3*side, x, y)
+        || isInside((7/4)*height, (13/4)*side, (7/4)*height, (11/4)*side, 2*height, 3*side, x, y)
+        || isInside(1*height, 0, 1*height, (1/2)*side, (5/4)*height, (1/4)*side, x, y)
+        || isInside(1*height, 0, 1*height, (1/2)*side, (3/4)*height, (1/4)*side, x, y)
+    )
+}
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+
+
+// if (isInsideHexa(relativeX, relativeY, initialDegrees+degrees, height, side)) {  // click inside the hexa
+//
+//
+//
+// } else {
+//     onTapCancel()
+// }
+// if (!gestures.longPress) {
+//     clearTimeout(gestures.longPressTimer)
+//     gestures.longPressTimer = setTimeout(() => {
+//         const position2 = myRef.current.getBoundingClientRect();
+//         const deltaX = Math.abs(gestures.startLocation.x - position2.x - window.scrollX)
+//         const deltaY = Math.abs(gestures.startLocation.y - position2.y - window.scrollY)
+//         if (deltaX+deltaY < 13){
+//             console.log("long press => rotate", deltaX+deltaY)
+//             rotate()
+//             gestures.longPress = true
+//         }
+//     }, 750)
+// }
+
+export { isInsideHexa, getRandomInt, isInside, clickedMiddle, clickedVerticesBottom, clickedVerticesTop }

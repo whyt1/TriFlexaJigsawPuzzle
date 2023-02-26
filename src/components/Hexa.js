@@ -1,17 +1,18 @@
 import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import {motion, useCycle, useDragControls} from "framer-motion";
-import {isInsideHexa, Triangle} from "./index";
+import {Triangle, clickedMiddle, clickedVerticesBottom, clickedVerticesTop} from "../components";
+import {isInside} from "./useful_functions";
 
 const Hexa = forwardRef((props, _ref) => {
     // properties
     let [state, setState] = useState(props.state)
     let [isFlipped, setIsFlipped] = useState(false)
-    let [flexed, setFlexed] = useState(false)
+    let [isFlexed, setIsFlexed] = useState(false)
     let [initialDegrees, setInitalDegrees] = useState(props.degrees)
     let [initialX, setInitialX] = useState(null);
     let [initialY, setInitialY] = useState(null);
-    let [x, setX] = useState(0)
-    let [y, setY] = useState(0)
+    let [x, setX] = useState(props.x - initialX)
+    let [y, setY] = useState(props.y - initialY)
 
     const images = props.images
     const myRef = useRef();
@@ -32,13 +33,22 @@ const Hexa = forwardRef((props, _ref) => {
         setInitialY(top);
     }, []);
 
+    useEffect(() => {
+        setX(props.x - initialX);
+        setY(props.y - initialY);
+        setInitalDegrees(props.degrees);
+        if (props.state%2) { setIsFlipped(prevIsFlipped => !prevIsFlipped) }
+        if (!(props.state%2)) { setIsFlexed(prevIsFlexed => !prevIsFlexed) }
+        setState(props.state);
+    }, [initialX, initialY, props.degrees, props.state, props.x, props.y]);
+
     function flex() {
         if (!(state % 2)) {
-            setFlexed(!flexed)
+            setIsFlexed(prevIsFlexed => !prevIsFlexed)
             rotate()
             setState((state) => (state + 2)%6)
         } else {
-            setFlexed(!flexed)
+            setIsFlexed(prevIsFlexed => !prevIsFlexed)
             rotate()
             setState((state) => (state + 4)%6)
         }
@@ -65,12 +75,11 @@ const Hexa = forwardRef((props, _ref) => {
         const relativeY = info.point.y - position.y - window.scrollY;
         gestures.startLocation = { x: position.x, y: position.y }
         // console.log("absolute click position: (", info.point.x, info.point.y, ")")
-        console.log("flexagon rotation:", initialDegrees+degrees,
-            "flexagon position:", gestures.startLocation,
-            "real position:", initialDegrees+degrees % 180 ? { x: position.x + height/2, y: position.y + side/2 } : gestures.startLocation)
-        // console.log("relative click position: (", relativeX, relativeY, ")")
-        // console.log(isInsideHexa(relativeX, relativeY) ? "inside" : "outside")
-        if (isInsideHexa(relativeX, relativeY)) {  // click inside the hexa
+        //console.log("relative click position: (", relativeX, relativeY, ")")
+        //console.log(isInsideHexa(relativeX, relativeY) ? "inside" : "outside")
+
+        // click the middle
+        if (clickedMiddle(relativeX, relativeY,initialDegrees+degrees, height, side)) {
             // drag
             controls.start(event)
 
@@ -81,53 +90,110 @@ const Hexa = forwardRef((props, _ref) => {
                 flip()
                 return;
             }
-            gestures.doubleTapIndex += 1
-            gestures.doubleTapTimer = setTimeout(() => {
-                gestures.doubleTapIndex = 0
-                gestures.doubleTapTimer = null}, 250)
-
-            // long press => rotate
-            if (!gestures.longPress) {
-                clearTimeout(gestures.longPressTimer)
-                gestures.longPressTimer = setTimeout(() => {
-                    const position2 = myRef.current.getBoundingClientRect();
-                    const deltaX = Math.abs(gestures.startLocation.x - position2.x - window.scrollX)
-                    const deltaY = Math.abs(gestures.startLocation.y - position2.y - window.scrollY)
-                    if (deltaX+deltaY < 20){
-                        console.log("long press => rotate", gestures.longPressTimer)
-                        rotate()
-                        gestures.longPress = true
-                    }
-                }, 750)
-            }
-        } else {
-            onTapCancel()
         }
-    }
 
-    function onTap(event, info) {
-        const position = myRef.current.getBoundingClientRect();
-        const relativeX = info.point.x - position.x - window.scrollX;
-        const relativeY = info.point.y - position.y - window.scrollY;
-        const deltaX = Math.abs(gestures.startLocation.x - position.x)
-        const deltaY = Math.abs(gestures.startLocation.y - position.y)
-        if ((deltaX+deltaY < 20) && (isInsideHexa(relativeX, relativeY))) {
-            if (gestures.doubleTapIndex === 0) {
-                console.log("single click => flex")
+        // click the vertices
+        if (clickedVerticesTop(relativeX,relativeY, initialDegrees+degrees, height, side) ||
+            clickedVerticesBottom(relativeX,relativeY, initialDegrees+degrees, height, side)) {
+            // double tap => flip
+            if (gestures.doubleTapIndex === 1) {
+                clearTimeout(gestures.doubleTapTimer)
+                console.log("double tap => flip")
                 flex()
+                return;
             }
-        } else {
-            onTapCancel()
         }
-        clearTimeout(gestures.longPressTimer)
-        gestures.longPress = false
+
+        gestures.doubleTapIndex += 1
+        gestures.doubleTapTimer = setTimeout(() => {
+            gestures.doubleTapIndex = 0
+            gestures.doubleTapTimer = null}, 250)
     }
-    function onTapCancel() {
-        clearTimeout(gestures.longPressTimer)
-        gestures.longPress = false
-        clearTimeout(gestures.doubleTapTimer)
-        gestures.doubleTapIndex = 0
+
+    function onPan(event, info) {
+        const position = myRef.current.getBoundingClientRect();
+        let x = info.point.x - position.x - window.scrollX;
+        let y = info.point.y - position.y - window.scrollY;
+
+        const rotation = ((initialDegrees+degrees)/60)%6
+        if (rotation%3) {
+            x = x - height/2
+            y = y - side/2
+        }
+
+        // click the vertices
+        if (isInside(0, (3/2)*side, (1/4)*height, (5/4)*side, 0, 1*side, x, y)
+        || isInside((1/4)*height, (3/4)*side, (1/4)*height, (5/4)*side, 0, 1*side, x, y)) {
+            console.log(300, rotation, 5)
+            if (5 !== rotation) {
+                rotate(5)
+            }
+        }
+
+        else if (isInside(2*height, (3/2)*side, (7/4)*height, (5/4)*side, 2*height, 1*side, x, y)
+        || isInside((7/4)*height, (3/4)*side, (7/4)*height, (5/4)*side, 2*height, 1*side, x, y)) {
+            console.log(60, rotation, 1)
+            if (1 !== rotation) {
+                rotate(1)
+            }
+        }
+
+        else if (isInside(1*height, 4*side, 1*height, (7/2)*side, (5/4)*height, (15/4)*side, x, y)
+        || isInside(1*height, 4*side, 1*height, (7/2)*side, (3/4)*height, (15/4)*side, x, y)) {
+            console.log(180, rotation, 3)
+            if (3 !== rotation) {
+                rotate(3)
+            }
+        }
+
+        else if (isInside(0, (5/2)*side, (1/4)*height, (11/4)*side, 0, 3*side, x, y)
+        || isInside((1/4)*height, (13/4)*side, (1/4)*height, (11/4)*side, 0, 3*side, x, y)) {
+            console.log(240, rotation, 4)
+            if (4 !== rotation) {
+                rotate(4)
+            }
+        }
+
+        else if (isInside(2*height, (5/2)*side, (7/4)*height, (11/4)*side, 2*height, 3*side, x, y)
+        || isInside((7/4)*height, (13/4)*side, (7/4)*height, (11/4)*side, 2*height, 3*side, x, y)) {
+            console.log(120, rotation, 2)
+            if (2 !== rotation) {
+                rotate(2)
+            }
+        }
+
+        else if (isInside(1*height, 0, 1*height, (1/2)*side, (5/4)*height, (1/4)*side, x, y)
+        || isInside(1*height, 0, 1*height, (1/2)*side, (3/4)*height, (1/4)*side, x, y)) {
+            console.log(0, rotation, 0)
+            if (0 !== rotation) {
+                rotate(0)
+            }
+        }
     }
+
+    // function onTap(event, info) {
+    //     const position = myRef.current.getBoundingClientRect();
+    //     const relativeX = info.point.x - position.x - window.scrollX;
+    //     const relativeY = info.point.y - position.y - window.scrollY;
+    //     const deltaX = Math.abs(gestures.startLocation.x - position.x)
+    //     const deltaY = Math.abs(gestures.startLocation.y - position.y)
+    //     if ((deltaX+deltaY < 20) && (isInsideHexa(relativeX, relativeY))) {
+    //         if (gestures.doubleTapIndex === 0) {
+    //             console.log("single click => flex")
+    //             flex()
+    //         }
+    //     } else {
+    //         onTapCancel()
+    //     }
+    //     clearTimeout(gestures.longPressTimer)
+    //     gestures.longPress = false
+    // }
+    // function onTapCancel() {
+    //     clearTimeout(gestures.longPressTimer)
+    //     gestures.longPress = false
+    //     clearTimeout(gestures.doubleTapTimer)
+    //     gestures.doubleTapIndex = 0
+    // }
 
     // function onDragEnd(event, info) {
     //     const position = myRef.current.getBoundingClientRect()
@@ -175,7 +241,7 @@ const Hexa = forwardRef((props, _ref) => {
         triangles.push(
             <Triangle key={`${props.index}${i}`}
                       style={trianglesStyles[i]}
-                      flexed={flexed}
+                      flexed={isFlexed}
                       image={images[state][i]}
                       onTapStart={(event, info) => onTapStart(event, info)}
                       side={side}
@@ -199,8 +265,9 @@ const Hexa = forwardRef((props, _ref) => {
             animate={ isFlipped ? "flipped" : "default" }
             variants={variants}
             transition={{ duration: .35 }}
-            onTap={onTap}
-            onTapCancel={onTapCancel}
+            onPan={onPan}
+            // onTap={onTap}
+            // onTapCancel={onTapCancel}
             className={"hexa"}
             width={height*2}
             height={side*4}
