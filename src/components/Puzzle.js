@@ -15,9 +15,9 @@ function Puzzle() {
     useEffect(() => {
         setTimeout(() => {setStartingState(1)}, 1000)
         setTimeout(() => {setStartingState(2)}, 2000)
-        setTimeout(() => {setStartingState(0)}, 3000)
-        setTimeout(() => {setStartingState(1)}, 4000)
-        setTimeout(() => {setStartingState(2)}, 5000)
+        setTimeout(() => {setStartingState(3)}, 3000)
+        setTimeout(() => {setStartingState(4)}, 4000)
+        setTimeout(() => {setStartingState(5)}, 5000)
         setTimeout(() => {setShuffled(true)}, 6000)
     }, [])
 
