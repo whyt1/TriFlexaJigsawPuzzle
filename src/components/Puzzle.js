@@ -140,20 +140,18 @@ function Puzzle() {
     const h = screenSize.height/2
     const positions = [
         { x: w-4*height+1, y: h-5*side+1 },
-        { x: w+2*height-1, y: h-5*side+1 },
-        { x: w-height, y: h-2*side },
-        { x: w-4*height+1, y: h+side-1 },
-        { x: w+2*height-1, y: h+side-1 },
-
         { x: w-2*height+1, y: h-5*side+1 },
-        { x: w-5*height+1, y: h-2*side },
-        { x: w+height-1, y: h-2*side },
-        { x: w-2*height+1, y: h+side-1 },
-
         { x: w-1, y: h-5*side+1 },
+        { x: w+2*height-1, y: h-5*side+1 },
+        { x: w-5*height+1, y: h-2*side },
         { x: w-3*height+1, y: h-2*side },
+        { x: w-height, y: h-2*side },
+        { x: w+height-1, y: h-2*side },
         { x: w+3*height-1, y: h-2*side },
+        { x: w-4*height+1, y: h+side-1 },
+        { x: w-2*height+1, y: h+side-1 },
         { x: w-1, y: h+side-1 },
+        { x: w+2*height-1, y: h+side-1 },
     ]
     const pieces = [];
     for (let i = 0; i < piecesNumber; i++) {
