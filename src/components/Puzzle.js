@@ -18,77 +18,77 @@ function Puzzle() {
         setTimeout(() => {setShuffled(true)}, 3000)
     }, [])
 
-    function checkCompleted() {
-        const epsilon = 15;
-        let totalNeighbours = 0
-        let neighboursCount = 0
-        for (let i = 0; i < piecesNumber; i+=3) {
-            const selfRef = flexagonsStateRef.current[i]
-            const selfState = selfRef.getFlexagonState()
-            if (selfState > 2) {
-                console.log("found a shuffled flexagon => not solved")
-                return;
-            }
-
-            let selfPosition = selfRef.getFlexagonPosition()
-            const selfRotation = selfRef.getFlexagonRotation()
-            if (selfRotation % 180) {
-                selfPosition = {x: selfPosition.x + height / 2, y: selfPosition.y + side / 2};
-            }
-
-            for (let j = 0; j < piecesNumber; i++) {
-                if (i === j) {
-                    continue
-                }
-                totalNeighbours++
-
-                const neighborRef = flexagonsStateRef.current[j]
-                const neighborState = selfRef.getFlexagonState()
-                if (selfState !== neighborState) {
-                    console.log(`#${i}, #${j} have different images => not solved`)
-                    return;
-                }
-
-                const neighborRotation = neighborRef.getFlexagonRotation()
-                let neighborPosition = neighborRef.getFlexagonPosition()
-                if (neighborRotation % 180) {
-                    neighborPosition = {x: neighborPosition.x + height / 2, y: neighborPosition.y + side / 2};
-                }
-                if (neighborRotation%120 !== selfRotation%120){
-                    console.log(`#${i}, #${j} have different rotation => not solved`)
-                    return;
-                }
-
-                let direction = (selfRotation%120) ? ((neighborPosition.x - selfPosition.x) / Math.abs(neighborPosition.x - selfPosition.x)) :
-                    ((selfPosition.x - neighborPosition.x) / Math.abs(neighborPosition.x - selfPosition.x))
-
-                if (Math.abs(Math.abs(neighborPosition.x - selfPosition.x) - height) +
-                    Math.abs(Math.abs(neighborPosition.y - selfPosition.y) - 3 * side) < 2 * epsilon) {
-                    // found neighbour top or bottom
-                    if (j % 3 === 1 && direction === -1) {
-                        neighboursCount++
-                    }
-                    if (j%3 === 2 && direction === 1) {
-                        neighboursCount++
-                    }
-
-                } else if (Math.abs(Math.abs(neighborPosition.x - selfPosition.x) - 2 * height) +
-                    Math.abs(neighborPosition.y - selfPosition.y) < 2 * epsilon) {
-                    // found neighbour sides
-                    if (j % 3 === 1 && direction === 1) {
-                        neighboursCount++
-                    }
-                    if (j%3 === 2 && direction === -1) {
-                        neighboursCount++
-                    }
-                }
-            }
-        }
-        console.log(`${neighboursCount} / ${totalNeighbours}`)
-        if (neighboursCount === totalNeighbours) {
-            console.log("Solved")
-        }
-    }
+    // function checkCompleted() {
+    //     const epsilon = 15;
+    //     let totalNeighbours = 0
+    //     let neighboursCount = 0
+    //     for (let i = 0; i < piecesNumber; i+=3) {
+    //         const selfRef = flexagonsStateRef.current[i]
+    //         const selfState = selfRef.getFlexagonState()
+    //         if (selfState > 2) {
+    //             console.log("found a shuffled flexagon => not solved")
+    //             return;
+    //         }
+    //
+    //         let selfPosition = selfRef.getFlexagonPosition()
+    //         const selfRotation = selfRef.getFlexagonRotation()
+    //         if (selfRotation % 180) {
+    //             selfPosition = {x: selfPosition.x + height / 2, y: selfPosition.y + side / 2};
+    //         }
+    //
+    //         for (let j = 0; j < piecesNumber; i++) {
+    //             if (i === j) {
+    //                 continue
+    //             }
+    //             totalNeighbours++
+    //
+    //             const neighborRef = flexagonsStateRef.current[j]
+    //             const neighborState = selfRef.getFlexagonState()
+    //             if (selfState !== neighborState) {
+    //                 console.log(`#${i}, #${j} have different images => not solved`)
+    //                 return;
+    //             }
+    //
+    //             const neighborRotation = neighborRef.getFlexagonRotation()
+    //             let neighborPosition = neighborRef.getFlexagonPosition()
+    //             if (neighborRotation % 180) {
+    //                 neighborPosition = {x: neighborPosition.x + height / 2, y: neighborPosition.y + side / 2};
+    //             }
+    //             if (neighborRotation%120 !== selfRotation%120){
+    //                 console.log(`#${i}, #${j} have different rotation => not solved`)
+    //                 return;
+    //             }
+    //
+    //             let direction = (selfRotation%120) ? ((neighborPosition.x - selfPosition.x) / Math.abs(neighborPosition.x - selfPosition.x)) :
+    //                 ((selfPosition.x - neighborPosition.x) / Math.abs(neighborPosition.x - selfPosition.x))
+    //
+    //             if (Math.abs(Math.abs(neighborPosition.x - selfPosition.x) - height) +
+    //                 Math.abs(Math.abs(neighborPosition.y - selfPosition.y) - 3 * side) < 2 * epsilon) {
+    //                 // found neighbour top or bottom
+    //                 if (j % 3 === 1 && direction === -1) {
+    //                     neighboursCount++
+    //                 }
+    //                 if (j%3 === 2 && direction === 1) {
+    //                     neighboursCount++
+    //                 }
+    //
+    //             } else if (Math.abs(Math.abs(neighborPosition.x - selfPosition.x) - 2 * height) +
+    //                 Math.abs(neighborPosition.y - selfPosition.y) < 2 * epsilon) {
+    //                 // found neighbour sides
+    //                 if (j % 3 === 1 && direction === 1) {
+    //                     neighboursCount++
+    //                 }
+    //                 if (j%3 === 2 && direction === -1) {
+    //                     neighboursCount++
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     console.log(`${neighboursCount} / ${totalNeighbours}`)
+    //     if (neighboursCount === totalNeighbours) {
+    //         console.log("Solved")
+    //     }
+    // }
 
     const snapNeighbors = (index) => {
         const epsilon = 30
@@ -118,7 +118,7 @@ function Puzzle() {
                 // console.log("neighbor position:", flexagonPosition, "old position:", positionZero, "new position:", {x:x,y:y}, "delta:",{x:deltaX,y:deltaY} )
                 selfRef.setFlexagonPosition(deltaX, deltaY);
                 //setPosition(selfRef, x,y)
-                checkCompleted()
+                //checkCompleted()
                 return;
             } else if (Math.abs(Math.abs(flexagonPosition.x - positionZero.x) - 2*height) +
                 Math.abs(flexagonPosition.y - positionZero.y) < 2*epsilon) {
@@ -129,10 +129,10 @@ function Puzzle() {
                 // console.log("neighbor position:", flexagonPosition, "old position:", positionZero, "new position:", {x:x,y:y}, "delta:",{x:deltaX,y:deltaY} )
                 selfRef.setFlexagonPosition(deltaX, deltaY);
                 //setPosition(selfRef, x,y)
-                checkCompleted()
+                //checkCompleted()
                 return;
             }
-            checkCompleted()
+            //checkCompleted()
         }
     }
 
@@ -168,7 +168,7 @@ function Puzzle() {
             pieces.push(<Hexa key={i} index={i} side={side} ref={setRef}
                               images={[turtle.turtle11, demon.demon11, lizard.lizard11, turtle.turtle12, demon.demon12, lizard.lizard12]}
                               onDragEnd={() => snapNeighbors(i)}
-                              checkCompleted={() => checkCompleted()}
+                              //checkCompleted={() => checkCompleted()}
                               x={isShuffled ? randomValues.x : positions[i].x}
                               y={isShuffled ? randomValues.y : positions[i].y}
                               state={isShuffled ? randomValues.state : startingState}
@@ -177,7 +177,7 @@ function Puzzle() {
             pieces.push(<Hexa key={i} index={i} side={side} ref={setRef}
                               images={[turtle.turtle21, demon.demon21, lizard.lizard21, turtle.turtle22, demon.demon22, lizard.lizard22]}
                               onDragEnd={() => snapNeighbors(i)}
-                              checkCompleted={() => checkCompleted()}
+                              //checkCompleted={() => checkCompleted()}
                               x={isShuffled ? randomValues.x : positions[i].x}
                               y={isShuffled ? randomValues.y : positions[i].y}
                               state={isShuffled ? randomValues.state : startingState}
@@ -186,7 +186,7 @@ function Puzzle() {
             pieces.push(<Hexa key={i} index={i} side={side} ref={setRef}
                               images={[turtle.turtle31, demon.demon31, lizard.lizard31, turtle.turtle32, demon.demon32, lizard.lizard32]}
                               onDragEnd={() => snapNeighbors(i)}
-                              checkCompleted={() => checkCompleted()}
+                              //checkCompleted={() => checkCompleted()}
                               x={isShuffled ? randomValues.x : positions[i].x}
                               y={isShuffled ? randomValues.y : positions[i].y}
                               state={isShuffled ? randomValues.state : startingState}
