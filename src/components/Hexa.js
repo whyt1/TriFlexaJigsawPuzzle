@@ -88,6 +88,7 @@ const Hexa = forwardRef((props, _ref) => {
                 clearTimeout(gestures.doubleTapTimer)
                 console.log("double tap middle => flip")
                 flip()
+                props.checkCompleted()
                 return;
             }
         }
@@ -99,6 +100,7 @@ const Hexa = forwardRef((props, _ref) => {
                 clearTimeout(gestures.doubleTapTimer)
                 console.log("double tap vertices => flex")
                 flex()
+                props.checkCompleted()
                 return;
             }
         }
@@ -129,6 +131,7 @@ const Hexa = forwardRef((props, _ref) => {
     }
     function onPanEnd() {
         gestures.lastVertex = null;
+        props.checkCompleted()
     }
 
     function onTap(event, info) {
@@ -147,6 +150,7 @@ const Hexa = forwardRef((props, _ref) => {
             if (gestures.doubleTapIndex === 0) {
                 console.log("single click vertices => rotate")
                 rotate()
+                props.checkCompleted()
             }
         }
     }
