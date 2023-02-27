@@ -26,6 +26,7 @@ function Puzzle() {
             const selfRef = flexagonsStateRef.current[i]
             const selfState = selfRef.getFlexagonState()
             if (selfState > 2) {
+                console.log("found a shuffled flexagon => not solved")
                 return;
             }
 
@@ -43,7 +44,8 @@ function Puzzle() {
 
                 const neighborRef = flexagonsStateRef.current[j]
                 const neighborState = selfRef.getFlexagonState()
-                if (selfState === neighborState) {
+                if (selfState !== neighborState) {
+                    console.log(`#${i}, #${j} have different images => not solved`)
                     return;
                 }
 
@@ -53,6 +55,7 @@ function Puzzle() {
                     neighborPosition = {x: neighborPosition.x + height / 2, y: neighborPosition.y + side / 2};
                 }
                 if (neighborRotation%120 !== selfRotation%120){
+                    console.log(`#${i}, #${j} have different rotation => not solved`)
                     return;
                 }
 
