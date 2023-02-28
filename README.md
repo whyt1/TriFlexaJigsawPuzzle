@@ -33,3 +33,14 @@ and rotate the pieces by dragging the vertices.
 These different actions will allow you to manipulate the puzzle pieces in different ways, enabling you to fit them together and complete the pictures.
 
 ### link: https://flexagon-jigsaw-puzzle.netlify.app/
+
+# Future ideas:
+There are several areas where the project can be continued and improved. One limitation of the current game is that it only works with a mouse, so adding support for keyboard and touch screen controls would make it more accessible to a wider range of devices. Another issue is that the size of the pieces is fixed and doesn't scale with the screen, causing problems with positioning on smaller screens. To fix this, the size and position of the pieces should be relative to the screen size.
+
+The puzzle currently consists of trihexaflexagon pieces only, but it could be expanded to include different shapes of flexagons for more diverse tiling patterns. This would allow for the use of drawings that don't have the necessary symmetry for tiling with hexagons. Furthermore, the complexity of the pieces could be increased with more types of "plexes" containing more wigs, leading to puzzles with more than three different images.
+
+Manually cutting the pictures to fit the puzzle pieces is time-consuming and limits the accuracy of the fit. A possible solution is to write code that cuts and fits the drawings to the puzzle pieces automatically, which would allow for more precise cuts and would enable users to upload their own photos. Additionally, an option for users to play with a single Flexagon with guidance could be added to familiarize them with the controls before attempting a full puzzle.
+
+To improve the user experience, a user interface could be added with a background, header, footer, and description page. The menu would allow users to switch between different pages, including an explanation page, a tutorial on a single Flexagon, and the puzzle itself. It could also allow users to customize the puzzle parameters, such as the size and number of pieces, and to shuffle the pieces. Finally, adding sound effects for each operation that can be performed on the Flexagons, as well as a melody and a sound when two pieces stick together, would enhance the experience. An animation in which more pieces are added until the entire screen is covered with a drawing when the puzzle is finished would add a satisfying conclusion to the game.
+
+Expand the options for puzzle pictures by adding fractals in addition to the eshcer tesselations.
