@@ -1,21 +1,3 @@
-# Summary:
-
-I created a jigsaw puzzle in React, where each piece of the puzzle is a trihexaflexagon. 
-A flexagon is a two-dimensional geometric figure that can be folded into a three-dimensional structure with multiple faces. 
-The trihexaflexagon is a hexagonal flexagon made up of six triangles that can be folded in different ways to reveal different patterns and colors on its faces.
-
-To create the puzzle pieces, I used Escher tessellations, which are repeating patterns of interlocking shapes. 
-I cropped and fitted the tessellations to the hexagonal shape of the trihexaflexagons using image editing tools. 
-
-By combining the concepts of flexagons, tessellations, and jigsaw puzzles, I created a unique puzzle experience that allows users to explore the different patterns and shapes of the trihexaflexagons.
-My puzzle is unique in that it combines the properties of three different puzzles into one, providing a challenging and engaging experience for users.
-
-To enable users to interact with the puzzle, I used Framer Motion library to handle click events and drag gestures. 
-Each hexagonal piece is a React function component with its own unique key, enabling it to maintain its own dragging state and behavior.
-
-Overall, this project allowed me to gain experience in using React and Framer Motion to build interactive user interfaces, as well as exploring the unique properties of flexagons and Escher tessellations. 
-
-
 ## Game rules:
 
 The game is a jigsaw puzzle with a twist. 
@@ -34,7 +16,27 @@ These different actions will allow you to manipulate the puzzle pieces in differ
 
 ### link: https://flexagon-jigsaw-puzzle.netlify.app/
 
+
+# Summary:
+
+I created a jigsaw puzzle in React, where each piece of the puzzle is a trihexaflexagon. 
+A flexagon is a two-dimensional geometric figure that can be folded into a three-dimensional structure with multiple faces. 
+The trihexaflexagon is a hexagonal flexagon made up of six triangles that can be folded in different ways to reveal different patterns and colors on its faces.
+
+To create the puzzle pieces, I used Escher tessellations, which are repeating patterns of interlocking shapes. 
+I cropped and fitted the tessellations to the hexagonal shape of the trihexaflexagons using image editing tools. 
+
+By combining the concepts of flexagons, tessellations, and jigsaw puzzles, I created a unique puzzle experience that allows users to explore the different patterns and shapes of the trihexaflexagons.
+My puzzle is unique in that it combines the properties of three different puzzles into one, providing a challenging and engaging experience for users.
+
+To enable users to interact with the puzzle, I used Framer Motion library to handle click events and drag gestures. 
+Each hexagonal piece is a React function component with its own unique key, enabling it to maintain its own dragging state and behavior.
+
+Overall, this project allowed me to gain experience in using React and Framer Motion to build interactive user interfaces, as well as exploring the unique properties of flexagons and Escher tessellations. 
+
+
 # Future ideas:
+
 There are several areas where the project can be continued and improved. One limitation of the current game is that it only works with a mouse, so adding support for keyboard and touch screen controls would make it more accessible to a wider range of devices. Another issue is that the size of the pieces is fixed and doesn't scale with the screen, causing problems with positioning on smaller screens. To fix this, the size and position of the pieces should be relative to the screen size.
 
 The puzzle currently consists of trihexaflexagon pieces only, but it could be expanded to include different shapes of flexagons for more diverse tiling patterns. This would allow for the use of drawings that don't have the necessary symmetry for tiling with hexagons. Furthermore, the complexity of the pieces could be increased with more types of "plexes" containing more wigs, leading to puzzles with more than three different images.
