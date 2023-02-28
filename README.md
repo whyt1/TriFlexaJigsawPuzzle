@@ -17,7 +17,7 @@ These different actions will allow you to manipulate the puzzle pieces in differ
 ### link: https://flexagon-jigsaw-puzzle.netlify.app/
 
 
-# Summary:
+## Summary:
 
 I created a jigsaw puzzle in React, where each piece of the puzzle is a trihexaflexagon. 
 A flexagon is a two-dimensional geometric figure that can be folded into a three-dimensional structure with multiple faces. 
@@ -35,7 +35,7 @@ Each hexagonal piece is a React function component with its own unique key, enab
 Overall, this project allowed me to gain experience in using React and Framer Motion to build interactive user interfaces, as well as exploring the unique properties of flexagons and Escher tessellations. 
 
 
-# Future ideas:
+## Future ideas:
 
 There are several areas where the project can be continued and improved. One limitation of the current game is that it only works with a mouse, so adding support for keyboard and touch screen controls would make it more accessible to a wider range of devices. Another issue is that the size of the pieces is fixed and doesn't scale with the screen, causing problems with positioning on smaller screens. To fix this, the size and position of the pieces should be relative to the screen size.
  
